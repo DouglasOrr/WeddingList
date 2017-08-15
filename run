@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+import subprocess
+import argparse
+import string
+import os
+
+
+IMAGE = 'weddinglist'
+
+
+def sh(cmd, **args):
+    code = subprocess.call(string.Template(cmd).substitute(args), shell=True)
+    if code:
+        exit(code)
+
+
+def sh_docker(cmd, docker_cmd='', **args):
+    sh('docker run --rm -it -v ${PWD}:/work -w /work ' + docker_cmd +
+       ' ${IMAGE}' +
+       ' env FLASK_APP=wl PYTHONPATH=/work ' +
+       cmd,
+       IMAGE=IMAGE,
+       PWD=os.getcwd(),
+       **args)
+
+
+def build():
+    sh('docker build --rm -t ${IMAGE} .', IMAGE=IMAGE)
+
+
+def run():
+    sh_docker('env FLASK_APP=wl PYTHONPATH=/work flask run --host=0.0.0.0',
+              docker_cmd='-p 5000:5000')
+
+
+def check():
+    sh_docker('pytest')
+    sh_docker('flake8')
+
+
+parser = argparse.ArgumentParser(
+    description='Run script for development'
+)
+subparsers = parser.add_subparsers()
+
+p = subparsers.add_parser('build', help='build the image')
+p.set_defaults(action=build)
+
+p = subparsers.add_parser('check', help='run code checks')
+p.set_defaults(action=check)
+
+p = subparsers.add_parser('run', help='run the server locally')
+p.set_defaults(action=run)
+
+args = vars(parser.parse_args())
+action = args.pop('action')
+action(**args)
