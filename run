@@ -9,9 +9,9 @@ import os
 IMAGE = 'weddinglist'
 
 
-def sh(cmd, **args):
+def sh(cmd, ignore_failure=False, **args):
     code = subprocess.call(string.Template(cmd).substitute(args), shell=True)
-    if code:
+    if (not ignore_failure) and code:
         exit(code)
 
 
@@ -30,13 +30,32 @@ def build():
 
 
 def run():
-    sh_docker('env FLASK_APP=wl PYTHONPATH=/work flask run --host=0.0.0.0',
+    sh_docker('env FLASK_APP=wl FLASK_DEBUG=1 PYTHONPATH=/work'
+              ' flask run --host=0.0.0.0',
               docker_cmd='-p 5000:5000')
+
+
+def execute(command):
+    sh_docker(command)
 
 
 def check():
     sh_docker('pytest')
     sh_docker('flake8')
+
+
+def sql():
+    sh('docker rm --force wl-db', ignore_failure=True)
+    sh('docker run --detach --name wl-db -e MYSQL_ROOT_PASSWORD=wl.pass mysql')
+
+
+def sql_repl():
+    sh('docker run -it --rm --link wl-db:mysql'
+       ' mysql sh -c \'exec mysql'
+       ' -h"$$MYSQL_PORT_3306_TCP_ADDR"'
+       ' -P"$$MYSQL_PORT_3306_TCP_PORT"'
+       ' -u"root"'
+       ' -p"$$MYSQL_ENV_MYSQL_ROOT_PASSWORD"\'')
 
 
 parser = argparse.ArgumentParser(
@@ -52,6 +71,16 @@ p.set_defaults(action=check)
 
 p = subparsers.add_parser('run', help='run the server locally')
 p.set_defaults(action=run)
+
+p = subparsers.add_parser('sql', help='start a background local sql server')
+p.set_defaults(action=sql)
+
+p = subparsers.add_parser('sql-repl', help='connect to the local sql server')
+p.set_defaults(action=sql_repl)
+
+p = subparsers.add_parser('x', help='execute a command in docker')
+p.add_argument('command', help='command to execute')
+p.set_defaults(action=execute)
 
 args = vars(parser.parse_args())
 action = args.pop('action')
