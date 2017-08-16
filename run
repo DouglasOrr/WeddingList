@@ -6,31 +6,54 @@ import string
 import os
 
 
+# Helpers
+
 IMAGE = 'weddinglist'
 REPOSITORY = 'weddinglistacr.azurecr.io'
 
 
-def sh(cmd, ignore_failure=False, **args):
-    code = subprocess.call(string.Template(cmd).substitute(args), shell=True)
-    if (not ignore_failure) and code:
+def _get_db_credentials(production):
+    if production:
+        return dict(
+            DB_HOST='weddinglistdb.mysql.database.azure.com',
+            DB_USER=os.environ['WEDDING_LIST_DB_USER'] + '@weddinglistdb',
+            DB_PASSWORD=os.environ['WEDDING_LIST_DB_PASSWORD']
+        )
+    else:
+        return dict(
+            # Find the local container's IP address
+            DB_HOST=subprocess.check_output(
+                'docker inspect wl-db | jq -r .[0].NetworkSettings.IPAddress',
+                shell=True
+            ).decode('utf-8').strip(),
+            DB_USER='root',
+            DB_PASSWORD='wl.pass'
+        )
+
+
+def _to_env(d):
+    return ' '.join('-e %s=%s' % (k, v) for k, v in d.items())
+
+
+def sh(cmd, **args):
+    cmd = string.Template(cmd).substitute(args)
+    code = subprocess.call(cmd, shell=True)
+    if code:
         exit(code)
 
 
-def sh_docker(cmd, docker_cmd='', **args):
+def sh_docker(cmd, docker_cmd='', production=False, **args):
     sh('docker run --rm -it -v ${PWD}:/work -w /work ' + docker_cmd +
-       ' ${IMAGE}' +
+       ' ${ENV} ${IMAGE}' +
        ' env FLASK_APP=wl PYTHONPATH=/work ' +
        cmd,
+       ENV=_to_env(_get_db_credentials(production)),
        IMAGE=IMAGE,
        PWD=os.getcwd(),
        **args)
 
 
-def build():
-    sh('docker build --rm -t ${IMAGE} .', IMAGE=IMAGE)
-    sh('docker pull mysql')
-    sh('docker pull azuresdk/azure-cli-python')
-
+# Core image utilities
 
 def run():
     sh_docker('env FLASK_APP=wl FLASK_DEBUG=1 PYTHONPATH=/work'
@@ -47,6 +70,14 @@ def check():
     sh_docker('flake8')
 
 
+# Non-core utilities
+
+def build():
+    sh('docker build --rm -t ${IMAGE} .', IMAGE=IMAGE)
+    sh('docker pull mysql')
+    sh('docker pull azuresdk/azure-cli-python')
+
+
 def push():
     check()
     sh('docker tag ${IMAGE} ${REPOSITORY}/${IMAGE}'
@@ -55,28 +86,14 @@ def push():
 
 
 def sql():
-    sh('docker rm --force wl-db', ignore_failure=True)
+    sh('docker rm --force wl-db || true')
     sh('docker run --detach --name wl-db -e MYSQL_ROOT_PASSWORD=wl.pass mysql')
 
 
 def sql_repl(production):
-    if production:
-        host = 'weddinglistdb.mysql.database.azure.com'
-        user = os.environ['WEDDING_LIST_DB_USER'] + '@weddinglistdb'
-        password = os.environ['WEDDING_LIST_DB_PASSWORD']
-    else:
-        # Find the local container's IP address
-        host = subprocess.check_output(
-            'docker inspect wl-db | jq -r .[0].NetworkSettings.IPAddress',
-            shell=True
-        ).decode('utf-8').strip()
-        user = 'root'
-        password = 'wl.pass'
-
-    sh('docker run -it --rm mysql'
-       ' sh -c \'exec mysql'
-       ' -h"${HOST}" -u"${USER}" -p"${PASSWORD}"\'',
-       HOST=host, USER=user, PASSWORD=password)
+    sh('docker run -it --rm ${ENV} mysql'
+       ' sh -c \'exec mysql -h$$DB_HOST -u$$DB_USER -p$$DB_PASSWORD\'',
+       ENV=_to_env(_get_db_credentials(production)))
 
 
 parser = argparse.ArgumentParser(
