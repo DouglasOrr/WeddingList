@@ -17,7 +17,8 @@ def _get_db_credentials(production):
         return dict(
             DB_HOST='weddinglistdb.mysql.database.azure.com',
             DB_USER=os.environ['WEDDING_LIST_DB_USER'] + '@weddinglistdb',
-            DB_PASSWORD=os.environ['WEDDING_LIST_DB_PASSWORD']
+            DB_PASSWORD=os.environ['WEDDING_LIST_DB_PASSWORD'],
+            DB_DATABASE='dougandmiriam',
         )
     else:
         return dict(
@@ -27,7 +28,8 @@ def _get_db_credentials(production):
                 shell=True
             ).decode('utf-8').strip(),
             DB_USER='root',
-            DB_PASSWORD='wl.pass'
+            DB_PASSWORD='wl.pass',
+            DB_DATABASE='dougandmiriam',
         )
 
 
@@ -85,7 +87,7 @@ def push():
        IMAGE=IMAGE, REPOSITORY=REPOSITORY)
 
 
-def sql():
+def sql_server():
     sh('docker rm --force wl-db || true')
     sh('docker run --detach --name wl-db -e MYSQL_ROOT_PASSWORD=wl.pass mysql')
 
@@ -101,29 +103,30 @@ parser = argparse.ArgumentParser(
 )
 subparsers = parser.add_subparsers()
 
-p = subparsers.add_parser('build', help='build the image')
-p.set_defaults(action=build)
-
 p = subparsers.add_parser('run', help='run the server locally')
 p.set_defaults(action=run)
-
-p = subparsers.add_parser('check', help='run code checks')
-p.set_defaults(action=check)
-
-p = subparsers.add_parser('push', help='push the current built image')
-p.set_defaults(action=push)
-
-p = subparsers.add_parser('sql', help='start a background local sql server')
-p.set_defaults(action=sql)
-
-p = subparsers.add_parser('sql-repl', help='connect to a sql server')
-p.add_argument('--production', action='store_true',
-               help='connect to the production database')
-p.set_defaults(action=sql_repl)
 
 p = subparsers.add_parser('x', help='execute a command in docker')
 p.add_argument('command', help='command to execute')
 p.set_defaults(action=execute)
+
+p = subparsers.add_parser('check', help='run code checks')
+p.set_defaults(action=check)
+
+p = subparsers.add_parser('build', help='build the image')
+p.set_defaults(action=build)
+
+p = subparsers.add_parser('push', help='push the current built image')
+p.set_defaults(action=push)
+
+p = subparsers.add_parser('sql-server',
+                          help='start a background local mysql server')
+p.set_defaults(action=sql_server)
+
+p = subparsers.add_parser('sql-repl', help='connect to a mysql server')
+p.add_argument('--production', action='store_true',
+               help='connect to the production database')
+p.set_defaults(action=sql_repl)
 
 
 args = vars(parser.parse_args())

@@ -1,3 +1,6 @@
+'''From empty, create the wedding list database.
+'''
+
 import mysql.connector
 import os
 
@@ -9,8 +12,8 @@ conn = mysql.connector.connect(
 )
 try:
     cursor = conn.cursor()
-    cursor.execute('CREATE DATABASE dougandmiriam')
-    cursor.execute('USE dougandmiriam')
+    cursor.execute('CREATE DATABASE %s' % os.environ['DB_DATABASE'])
+    cursor.execute('USE %s' % os.environ['DB_DATABASE'])
     cursor.execute("""CREATE TABLE item (
     id INT PRIMARY KEY NOT NULL,
     title VARCHAR(256) NOT NULL,
@@ -18,9 +21,9 @@ try:
     )""")
     cursor.execute("""CREATE TABLE image (
     item_id INT NOT NULL,
-    image VARCHAR(256) NOT NULL,
+    path VARCHAR(256) NOT NULL,
     link VARCHAR(256) NOT NULL,
-    sort_order INT NOT NULL,
+    thumb INT NOT NULL,
     INDEX(item_id)
     )""")
     cursor.execute("""CREATE TABLE claim (
@@ -30,5 +33,8 @@ try:
     note VARCHAR(1024) NOT NULL,
     INDEX(item_id)
     )""")
+
+    conn.commit()
+    cursor.close()
 finally:
     conn.close()
