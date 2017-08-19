@@ -109,6 +109,7 @@ def item_unclaimed():
         LEFT JOIN image ON item.id = image.item_id AND image.thumb = 1
         LEFT JOIN claim ON item.id = claim.item_id
         WHERE claim.item_id IS NULL
+        ORDER BY item.value
         """)
         return flask.jsonify(util.get_many(cursor))
 

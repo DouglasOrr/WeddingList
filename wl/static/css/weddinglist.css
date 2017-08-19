@@ -1,24 +1,28 @@
 /* Layout (base) */
 
+body {
+    background-image: url("/static/img/banner.png");
+    background-repeat: repeat-x;
+    background-size: 20em;
+}
 nav {
-    margin-bottom: 2em;
+    margin-bottom: 3em;
 }
 .navbar-light {
-    background-color: #a7b86C;
+    background-color: transparent;
 }
-.navbar-brand {
-    font-weight: 900;
-}
-.navbar-brand, .nav-link {
-    color: #fff !important;
+.nav-link {
+    font-family: sans, sans-serif;
+    font-size: 1.2em;
+    color: #000 !important;
+    margin-top: -0.5em;
 }
 .flip-clock-label {
-    color: #fff !important;
     font-weight: 700;
     font-size: 2.5em;
 }
 .countdown {
-    zoom: 0.4;
+    zoom: 0.25;
     padding-top: 1em;
 }
 .alert {

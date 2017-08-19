@@ -17,7 +17,8 @@ try:
     cursor.execute("""CREATE TABLE item (
     id INT PRIMARY KEY NOT NULL,
     title VARCHAR(256) NOT NULL,
-    description VARCHAR(1024) NOT NULL
+    description VARCHAR(1024) NOT NULL,
+    value FLOAT NOT NULL
     )""")
     cursor.execute("""CREATE TABLE image (
     item_id INT NOT NULL,

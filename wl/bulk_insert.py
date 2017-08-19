@@ -30,8 +30,8 @@ try:
         for row in csv.DictReader(f):
             # Insert item first
             cursor.execute("""
-            INSERT INTO item (id, title, description)
-            VALUES (%(id)s, %(title)s, %(description)s)
+            INSERT INTO item (id, title, description, value)
+            VALUES (%(id)s, %(title)s, %(description)s, %(value)s)
             """, row)
 
             os.makedirs(path.join(img_dir, row['id']))
