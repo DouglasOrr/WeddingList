@@ -2,19 +2,14 @@
 '''
 
 import csv
-import mysql.connector
 import os
 import subprocess
 from os import path
 import shutil
+from . import util
 
 
-conn = mysql.connector.connect(
-    host=os.environ['DB_HOST'],
-    user=os.environ['DB_USER'],
-    password=os.environ['DB_PASSWORD'],
-    database=os.environ['DB_DATABASE'],
-)
+conn = util.connect()
 try:
     list_file = 'list.csv'
     img_dir = 'data'

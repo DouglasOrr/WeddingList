@@ -58,7 +58,7 @@ def sh_docker(cmd, docker_cmd='', production=False, **args):
 # Core image utilities
 
 def run():
-    sh_docker('env FLASK_APP=wl FLASK_DEBUG=1 PYTHONPATH=/work'
+    sh_docker('env FLASK_APP=wl.server FLASK_DEBUG=1 PYTHONPATH=/work'
               ' flask run --host=0.0.0.0',
               docker_cmd='-p 5000:5000')
 
