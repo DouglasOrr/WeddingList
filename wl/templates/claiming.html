@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="row item-title-row">
+  <div class="col-12">
+    <h1>{{ item.title }}</h1>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <ol class="claiming-todo">
+    <h2><li>
+        Enter email &amp; claim the item below
+        (to make sure no-one else buys the same gift as you).
+    </li></h2>
+    <h2><li>
+        Choose &amp; buy something for the happy couple
+        (use any shop or online retailer).
+    </li></h2>
+    <h2><li>
+        Either bring it to the wedding, or get it delivered to our new home.
+    </li></h2>
+  </ol>
+
+  <form action="/claim/{{ item.id }}" method="POST">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input class="form-control" name="name" type="text"
+             placeholder="Name" autofocus/>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input class="form-control" name="email" type="email"
+             placeholder="Email"/>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success" disabled="true">Claim!</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

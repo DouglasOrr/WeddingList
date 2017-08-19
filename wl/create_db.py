@@ -1,5 +1,5 @@
-'''From empty, create the wedding list database.
-'''
+"""From empty, create the wedding list database.
+"""
 
 import mysql.connector
 import os
@@ -27,11 +27,11 @@ try:
     INDEX(item_id)
     )""")
     cursor.execute("""CREATE TABLE claim (
-    item_id INT NOT NULL,
+    item_id INT PRIMARY KEY NOT NULL,
+    name VARCHAR(256) NOT NULL,
     email VARCHAR(256) NOT NULL,
     time DATE NOT NULL,
-    note VARCHAR(1024) NOT NULL,
-    INDEX(item_id)
+    note VARCHAR(1024) NOT NULL
     )""")
 
     conn.commit()

@@ -1,5 +1,5 @@
-'''Perform a bulk insert into the database, and download images.
-'''
+"""Perform a bulk insert into the database, and download images.
+"""
 
 import csv
 import os

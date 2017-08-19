@@ -21,8 +21,8 @@ def get_many(cursor):
 
 
 class UsingCursor:
-    '''Auto-close a database cursor using Python `with`.
-    '''
+    """Auto-close a database cursor using Python `with`.
+    """
     def __init__(self, conn):
         self.conn = conn
 

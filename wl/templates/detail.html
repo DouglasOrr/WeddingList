@@ -4,9 +4,13 @@
 <div class="row item-title-row">
   <div class="col-12">
     <h1>{{ item.title }}</h1>
-    <button class="btn btn-success btn-lg item-claim">
-      Claim!
-    </button>
+    <div class="item-claim">
+      {% if item.claimed %}
+      <a class="btn btn-secondary btn-lg" disabled>Claimed</a>
+      {% else %}
+      <a class="btn btn-success btn-lg" href="/claiming/{{item.id}}">Claim!</a>
+      {% endif %}
+    </div>
   </div>
 </div>
 

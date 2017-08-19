@@ -1,15 +1,17 @@
-td {
-    vertical-align: middle !important;
-}
+/* Layout (base) */
 
+nav {
+    margin-bottom: 2em;
+}
 .navbar-light {
     background-color: #a7b86C;
 }
 .navbar-brand {
     font-weight: 900;
+}
+.navbar-brand, .nav-link {
     color: #fff !important;
 }
- 
 .flip-clock-label {
     color: #fff !important;
     font-weight: 700;
@@ -19,24 +21,40 @@ td {
     zoom: 0.4;
     padding-top: 1em;
 }
+.alert {
+    position: fixed;
+    bottom: 2em;
+    left: 4em;
+    right: 4em;
+}
 
-.list-intro {
-    margin-top: 2em;
+
+/* Common */
+
+.intro-text {
+    margin-bottom: 2em;
+}
+.intro-text p {
     color: #444;
     font-size: 1.1em;
     font-family: sans, sans-serif;
 }
-.mainlist {
-    margin-top: 2em;
+
+/* list.html */
+
+.list-main td {
+    vertical-align: middle !important;
 }
-.mainlist h2 {
+.list-main h2 {
     font-size: 1.5em;
     font-weight: 300;
     font-family: sans, sans-serif;
 }
-.mainlist .td-img {
+.list-main .td-img {
     width: 10em;
 }
+
+/* detail.html */
 
 .item-title-row {
     margin-top: 2em;
@@ -58,4 +76,13 @@ td {
     display: inline-block;
     float: right;
     margin-left: 1em;
+}
+
+/* claiming.html */
+
+.claiming-todo li {
+    margin-bottom: 1.5em;
+}
+.claiming-todo h2 {
+    font-size: 1.5em;
 }
