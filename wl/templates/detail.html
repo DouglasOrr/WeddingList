@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="row item-title-row">
+  <div class="col-12">
+    <h1>{{ item.title }}</h1>
+    <button class="btn btn-success btn-lg item-claim">
+      Claim!
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <blockquote class="blockquote item-description">
+      {{ item.description|safe }}
+      <footer class="blockquote-footer">Doug &amp; Miriam</footer>
+    </blockquote>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 item-example">
+    Here are some linked examples of things Doug &amp; Miriam quite like.
+    But don't let us constrain you...
+  </div>
+  {% for img in item.images %}
+  <div class="col-md-4">
+    <a href="{{img.link}}">
+      <img class="img-fluid"
+           src="/static/lib/img/{{ img.path }}"/>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

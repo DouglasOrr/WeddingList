@@ -1,0 +1,61 @@
+td {
+    vertical-align: middle !important;
+}
+
+.navbar-light {
+    background-color: #a7b86C;
+}
+.navbar-brand {
+    font-weight: 900;
+    color: #fff !important;
+}
+ 
+.flip-clock-label {
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 2.5em;
+}
+.countdown {
+    zoom: 0.4;
+    padding-top: 1em;
+}
+
+.list-intro {
+    margin-top: 2em;
+    color: #444;
+    font-size: 1.1em;
+    font-family: sans, sans-serif;
+}
+.mainlist {
+    margin-top: 2em;
+}
+.mainlist h2 {
+    font-size: 1.5em;
+    font-weight: 300;
+    font-family: sans, sans-serif;
+}
+.mainlist .td-img {
+    width: 10em;
+}
+
+.item-title-row {
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+.item-title-row h1 {
+    display: inline-block;
+}
+.item-title-row button {
+    margin-top: -0.3em;
+}
+.item-description {
+    margin-bottom: 3em;
+}
+.item-example {
+    font-style: italic;
+}
+.item-claim {
+    display: inline-block;
+    float: right;
+    margin-left: 1em;
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>Doug &amp; Miriam</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/lib/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/lib/css/flipclock.css">
+    <script src="/static/lib/js/jquery.js"></script>
+    <script src="/static/lib/js/popper.js"></script>
+    <script src="/static/lib/js/bootstrap.js"></script>
+    <script src="/static/lib/js/flipclock.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/weddinglist.css">
+    <script src="/static/js/layout.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="/">Doug &amp; Miriam</a>
+      <div class="nav navbar-nav ml-auto">
+        <div class="countdown"/>
+      </div>
+    </nav>
+
+    <div class="container">
+      {% block body %}{% endblock %}
+    </div>
+
+  </body>
+
+</html>

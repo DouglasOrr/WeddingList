@@ -19,11 +19,32 @@ def close_db(error):
         flask.g.db_conn.close()
 
 
+def get_detail(id):
+    with get_cursor() as cursor:
+        cursor.execute('SELECT * FROM item WHERE id = %d' % id)
+        result = util.get_one(cursor)
+
+        cursor.execute('''
+        SELECT path, link
+        FROM image
+        WHERE item_id = %d
+        ORDER BY thumb DESC
+        ''' % id)
+        result['images'] = util.get_many(cursor)
+
+        return result
+
+
 # Pages
 
 @app.route('/')
-def root():
-    return 'Root page'
+def page_list():
+    return flask.render_template('list.html')
+
+
+@app.route('/detail/<int:id>')
+def page_detail(id):
+    return flask.render_template('detail.html', item=get_detail(id))
 
 
 # App
@@ -35,25 +56,14 @@ def item():
         SELECT item.id, item.title, image.path
         FROM item
         LEFT JOIN image ON item.id = image.item_id
+        WHERE image.thumb = 1
         ''')
         return flask.jsonify(util.get_many(cursor))
 
 
 @app.route('/item/<int:id>/detail')
 def item_detail(id):
-    with get_cursor() as cursor:
-        cursor.execute('SELECT * FROM item WHERE id=%d' % id)
-        result = util.get_one(cursor)
-
-        cursor.execute('''
-        SELECT path, link
-        FROM image
-        WHERE item_id=%d
-        ORDER BY thumb DESC
-        ''' % id)
-        result['images'] = util.get_many(cursor)
-
-        return flask.jsonify(result)
+    return flask.jsonify(get_detail(id))
 
 
 @app.route('/item/<int:id>/claim', methods=['POST'])

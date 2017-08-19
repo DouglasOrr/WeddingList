@@ -24,3 +24,12 @@
     # 4. create a mysql database
     az mysql server create --resource-group weddinglist --name weddinglistdb --admin-user king --admin-password PASSWORD --performance-tier Basic --compute-units 50
     az mysql server firewall-rule create --resource-group weddinglist --server weddinglistdb --name HomeIP --start-ip-address IPADDRESS --end-ip-address IPADDRESS
+
+# Setting up:
+
+    ./run build
+    ./run x "python -m wl.get_js"
+
+    ./run sql-server
+    ./run x "python -m wl.create_db"
+    ./run x "python -m wl.bulk_insert"

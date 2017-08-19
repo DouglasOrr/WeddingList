@@ -12,15 +12,19 @@ from . import util
 conn = util.connect()
 try:
     list_file = 'list.csv'
-    img_dir = 'data'
+    img_dir = 'wl/static/lib/img'
     extensions = {'image/jpeg': '.jpg', 'image/png': '.png'}
     clean = True
 
     cursor = conn.cursor()
     if clean:
-        shutil.rmtree(img_dir)
+        if path.isdir(img_dir):
+            shutil.rmtree(img_dir)
         cursor.execute('delete from item')
         cursor.execute('delete from image')
+
+    if not path.isdir(img_dir):
+        os.makedirs(img_dir)
 
     with open(list_file) as f:
         for row in csv.DictReader(f):
