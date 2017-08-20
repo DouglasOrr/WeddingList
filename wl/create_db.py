@@ -24,7 +24,6 @@ try:
     item_id INT NOT NULL,
     path VARCHAR(256) NOT NULL,
     link VARCHAR(256) NOT NULL,
-    thumb INT NOT NULL,
     INDEX(item_id)
     )""")
     cursor.execute("""CREATE TABLE claim (

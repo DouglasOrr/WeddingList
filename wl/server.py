@@ -34,7 +34,6 @@ def get_detail(id):
         SELECT path, link
         FROM image
         WHERE item_id = %d
-        ORDER BY thumb DESC
         """ % id)
         result['images'] = util.get_many(cursor)
 
@@ -104,9 +103,8 @@ def page_claimed():
 def item_unclaimed():
     with get_cursor() as cursor:
         cursor.execute("""
-        SELECT item.id, item.title, image.path
+        SELECT item.id, item.title
         FROM item
-        LEFT JOIN image ON item.id = image.item_id AND image.thumb = 1
         LEFT JOIN claim ON item.id = claim.item_id
         WHERE claim.item_id IS NULL
         ORDER BY item.value
@@ -118,9 +116,8 @@ def item_unclaimed():
 def item_claimed_by(email):
     with get_cursor() as cursor:
         cursor.execute("""
-        SELECT item.id, item.title, image.path
+        SELECT item.id, item.title
         FROM item
-        LEFT JOIN image ON item.id = image.item_id AND image.thumb = 1
         JOIN claim ON item.id = claim.item_id
         WHERE claim.email = %s
         """, (email,))
@@ -130,9 +127,3 @@ def item_claimed_by(email):
 @app.route('/item/<int:id>/detail')
 def item_detail(id):
     return flask.jsonify(get_detail(id))
-
-
-@app.route('/item/<int:id>/claim', methods=['POST'])
-def item_claim(id):
-    # TODO
-    return 'Claim %d' % id

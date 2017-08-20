@@ -51,13 +51,21 @@ try:
                     name = path.join(
                         row['id'], str(image_n) + extensions[img_type]
                     )
-                    shutil.move(tmp, path.join(img_dir, name))
+                    img_dest = path.join(img_dir, name)
+                    shutil.move(tmp, img_dest)
 
                     # Insert image
                     cursor.execute("""
-                    INSERT INTO image (item_id, path, link, thumb)
-                    VALUES (%s, %s, %s, %s)
-                    """, (row['id'], name, img_link, image_n == 0))
+                    INSERT INTO image (item_id, path, link)
+                    VALUES (%s, %s, %s)
+                    """, (row['id'], name, img_link))
+
+                    # Thumbnail
+                    if image_n == 0:
+                        subprocess.check_call(
+                            ['convert', img_dest,
+                             '-resize', '128x128',
+                             path.join(img_dir, row['id'], 'thumb.jpg')])
     conn.commit()
     cursor.close()
 finally:

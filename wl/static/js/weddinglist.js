@@ -8,6 +8,51 @@ $(function() {
     });
 
     // List of items
+    function show(table, items) {
+        $(table).find('tbody').empty();
+        $.each(items, function(_, item) {
+            var img = '<img class="img-thumbnail"' +
+                ' src="/static/lib/img/' + item.id + '/thumb.jpg"'
+                ' />';
+            var row = $('<tr>' +
+                        '<td class="td-img">' + img + '</td>' +
+                        '<td><h2>' + item.title + '</h2></td>' +
+                        '</tr>');
+            if (table.dataset.listQuery == 'claimed-by') {
+                var unclaimUrl = "/unclaim/" + encodeURIComponent(table.dataset.listQueryEmail) + "/" + item.id;
+                var unclaim = $('<form action="' + unclaimUrl + '" method="POST"><button class="btn btn-danger">Unclaim!</button></form>');
+                $('<td></td>').append(unclaim).appendTo(row);
+            }
+            row.click(function() {
+                window.location = '/detail/' + item.id;
+            });
+            $(table).find('tbody').append(row);
+        });
+    }
+    function filter(items, query) {
+        // Empty query
+        if (query.trim() === '') {
+            return items;
+        }
+        // Build a list of patterns
+        var ftokens = query.trim().split(' ');
+        var fexp = [];
+        $.each(ftokens, function(i, token) {
+            fexp.push(new RegExp('\\b' + token + (i + 1 < ftokens.length ? '\\b' : ''), 'i'));
+        });
+        // Find items that match all patterns
+        var fitems = [];
+        $.each(items, function(_, item) {
+            var match = true;
+            $.each(fexp, function (_, exp) {
+                match &= exp.test(item.title);
+            });
+            if (match) {
+                fitems.push(item);
+            }
+        });
+        return fitems;
+    }
     $('.list-main').each(function (_, table) {
         var query;
         if (table.dataset.listQuery == 'unclaimed') {
@@ -17,23 +62,9 @@ $(function() {
         }
         $.ajax(query)
             .done(function (items) {
-                $.each(items, function(_, item) {
-                    var img = '<img class="img-thumbnail"' +
-                        ' src="/static/lib/img/' + item.path +
-                        '" />';
-                    var row = $('<tr>' +
-                                '<td class="td-img">' + img + '</td>' +
-                                '<td><h2>' + item.title + '</h2></td>' +
-                                '</tr>');
-                    if (table.dataset.listQuery == 'claimed-by') {
-                        var unclaimUrl = "/unclaim/" + encodeURIComponent(table.dataset.listQueryEmail) + "/" + item.id;
-                        var unclaim = $('<form action="' + unclaimUrl + '" method="POST"><button class="btn btn-danger">Unclaim!</button></form>');
-                        $('<td></td>').append(unclaim).appendTo(row);
-                    }
-                    $(".list-main tbody").append(row);
-                    row.click(function() {
-                        window.location = '/detail/' + item.id;
-                    });
+                show(table, items);
+                $('.list-filter').keyup(function (e) {
+                    show(table, filter(items, e.target.value));
                 });
             });
     });
