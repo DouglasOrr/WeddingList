@@ -6,9 +6,9 @@
     <h1>{{ item.title }}</h1>
     <div class="item-claim">
       {% if item.claimed %}
-      <a class="btn btn-secondary btn-lg" disabled>Claimed</a>
+      <a class="btn btn-secondary btn-lg" disabled>Reserved</a>
       {% else %}
-      <a class="btn btn-success btn-lg" href="/claiming/{{item.id}}">Claim!</a>
+      <a class="btn btn-success btn-lg" href="/claiming/{{item.id}}">Reserve!</a>
       {% endif %}
     </div>
   </div>
@@ -30,10 +30,10 @@
   </div>
   {% for img in item.images %}
   <div class="col-md-4">
-    <a href="{{img.link}}">
+    {% if img.link %}<a href="{{img.link}}">{% endif %}
       <img class="img-fluid"
            src="/static/lib/img/{{ img.path }}"/>
-    </a>
+    {% if img.link %}</a>{% endif %}
   </div>
   {% endfor %}
 </div>

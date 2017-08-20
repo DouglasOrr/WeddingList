@@ -20,7 +20,7 @@ $(function() {
                         '</tr>');
             if (table.dataset.listQuery == 'claimed-by') {
                 var unclaimUrl = "/unclaim/" + encodeURIComponent(table.dataset.listQueryEmail) + "/" + item.id;
-                var unclaim = $('<form action="' + unclaimUrl + '" method="POST"><button class="btn btn-danger">Unclaim!</button></form>');
+                var unclaim = $('<form action="' + unclaimUrl + '" method="POST"><button class="btn btn-danger">Unreserve!</button></form>');
                 $('<td></td>').append(unclaim).appendTo(row);
             }
             row.click(function() {

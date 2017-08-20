@@ -45,7 +45,7 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      {%if error == 'already-claimed' %}Sorry - that item has already been claimed.{% endif %}
+      {%if error == 'already-claimed' %}Sorry - that item has already been reserved.{% endif %}
     </div>
     {% endif %}
 
@@ -54,7 +54,7 @@
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      {% if message == 'unclaimed' %}You have unclaimed an item.{% endif %}
+      {% if message == 'unclaimed' %}You have unreserved an item.{% endif %}
     </div>
     {% endif %}
 
