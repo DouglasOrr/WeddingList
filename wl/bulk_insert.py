@@ -29,6 +29,8 @@ try:
     with open(list_file) as f:
         for row in csv.DictReader(f):
             # Insert item first
+            print("Adding: %s" % row)
+
             cursor.execute("""
             INSERT INTO item (id, title, description, value)
             VALUES (%(id)s, %(title)s, %(description)s, %(value)s)

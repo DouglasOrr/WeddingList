@@ -22,8 +22,8 @@ try:
     )""")
     cursor.execute("""CREATE TABLE image (
     item_id INT NOT NULL,
-    path VARCHAR(256) NOT NULL,
-    link VARCHAR(256) NOT NULL,
+    path VARCHAR(512) NOT NULL,
+    link VARCHAR(512) NOT NULL,
     INDEX(item_id)
     )""")
     cursor.execute("""CREATE TABLE claim (

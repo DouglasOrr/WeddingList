@@ -33,3 +33,5 @@
     ./run sql-server
     ./run x "python -m wl.create_db"
     ./run x "python -m wl.bulk_insert"
+
+    ./run run

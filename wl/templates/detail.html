@@ -29,9 +29,9 @@
     But don't let us constrain you...
   </div>
   {% for img in item.images %}
-  <div class="col-md-4">
+  <div class="col-md-4 text-center">
     {% if img.link %}<a href="{{img.link}}">{% endif %}
-      <img class="img-fluid"
+      <img class="img-fluid item-img"
            src="/static/lib/img/{{ img.path }}"/>
     {% if img.link %}</a>{% endif %}
   </div>

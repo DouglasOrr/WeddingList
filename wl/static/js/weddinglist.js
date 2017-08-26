@@ -15,7 +15,7 @@ $(function() {
                 ' src="/static/lib/img/' + item.id + '/thumb.jpg"'
                 ' />';
             var row = $('<tr>' +
-                        '<td class="td-img">' + img + '</td>' +
+                        '<td class="td-img" align="center">' + img + '</td>' +
                         '<td><h2>' + item.title + '</h2></td>' +
                         '</tr>');
             if (table.dataset.listQuery == 'claimed-by') {

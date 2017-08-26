@@ -55,7 +55,11 @@ nav {
     vertical-align: middle !important;
 }
 .list-main .td-img {
-    width: 8em;
+    width: 10em;
+}
+.list-main .td-img img {
+    max-width: 8em;
+    max-height: 8em;
 }
 .list-main h2 {
     font-size: 1.2em;
@@ -85,6 +89,9 @@ nav {
     display: inline-block;
     float: right;
     margin-left: 1em;
+}
+.item-img {
+    max-height: 30em;
 }
 
 /* claiming.html */
