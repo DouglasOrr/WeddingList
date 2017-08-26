@@ -42,6 +42,11 @@ def get_detail(id):
 
 # Pages
 
+@app.route('/favicon.ico')
+def favicon():
+    return flask.redirect('/static/img/favicon.ico')
+
+
 @app.route('/')
 def page_list():
     return flask.render_template(

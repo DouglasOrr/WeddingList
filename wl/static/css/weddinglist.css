@@ -27,7 +27,7 @@ nav {
     top: 0.5em;
 }
 .countdown {
-    transform: scale(0.30);
+    transform: scale(0.28);
     transform-origin: 100% 0%;
 }
 .alert {
@@ -53,6 +53,7 @@ nav {
 
 .list-main td {
     vertical-align: middle !important;
+    height: 10em;
 }
 .list-main .td-img {
     width: 10em;
