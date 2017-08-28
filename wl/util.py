@@ -20,6 +20,19 @@ def get_many(cursor):
             for row in cursor]
 
 
+class UsingConn:
+    """Auto-close a database connection using Python `with`.
+    """
+    def __init__(self, conn):
+        self.conn = conn
+
+    def __enter__(self):
+        return self.conn
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.conn.close()
+
+
 class UsingCursor:
     """Auto-close a database cursor using Python `with`.
     """
@@ -31,4 +44,4 @@ class UsingCursor:
         return self.cursor
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.conn.close()
+        self.cursor.close()

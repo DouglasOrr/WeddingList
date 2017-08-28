@@ -9,14 +9,12 @@ import shutil
 from . import util
 
 
-conn = util.connect()
-try:
-    list_file = 'list.csv'
-    img_dir = 'wl/static/lib/img'
-    extensions = {'image/jpeg': '.jpg', 'image/png': '.png'}
-    clean = True
+list_file = 'list.csv'
+img_dir = 'wl/static/lib/img'
+extensions = {'image/jpeg': '.jpg', 'image/png': '.png'}
+clean = True
 
-    cursor = conn.cursor()
+with util.UsingConn(util.connect()) as conn, util.UsingCursor(conn) as cursor:
     if clean:
         if path.isdir(img_dir):
             shutil.rmtree(img_dir)
@@ -69,6 +67,3 @@ try:
                              '-resize', '128x128',
                              path.join(img_dir, row['id'], 'thumb.jpg')])
     conn.commit()
-    cursor.close()
-finally:
-    conn.close()
