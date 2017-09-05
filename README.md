@@ -28,7 +28,13 @@
     # 5. Create a server
     mkdir -p local/.ssh && ssh-keygen
     az vm create --resource-group weddinglist --name weddinglistvm --image UbuntuLTS --ssh-key-value local/.ssh/id_rsa.pub --admin-user USER
-    # Then install Docker on the server, login to the registry, pull image & start server
+    az vm open-port --port 80 --resource-group weddinglist --name weddinglistvm
+    az mysql server firewall-rule create --resource-group weddinglist --server weddinglistdb --name ProdIP --start-ip-address IPADDRESS --end-ip-address IPADDRESS
+    # SSH in, install Docker on the server, login to the registry
+
+    # 6. Setup credentials & start server
+    export WEDDING_LIST_DB_USER=king
+    export WEDDING_LIST_DB_PASSWORD=PASSWORD
     wget https://raw.githubusercontent.com/DouglasOrr/WeddingList/master/prod
     sh prod
 
