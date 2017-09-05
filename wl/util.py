@@ -8,6 +8,7 @@ def connect():
         user=os.environ['DB_USER'],
         password=os.environ['DB_PASSWORD'],
         database=os.environ['DB_DATABASE'],
+        ssl_ca='/BaltimoreCyberTrustRoot.crt.pem',
     )
 
 

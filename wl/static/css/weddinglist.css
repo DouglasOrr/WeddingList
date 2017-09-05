@@ -1,3 +1,4 @@
+
 /* Layout (base) */
 
 body {
@@ -25,10 +26,12 @@ nav {
     position: absolute;
     right: 1em;
     top: 0.5em;
+    margin-left: -100em;
 }
 .countdown {
     transform: scale(0.28);
     transform-origin: 100% 0%;
+    z-index: 100;
 }
 .alert {
     position: fixed;

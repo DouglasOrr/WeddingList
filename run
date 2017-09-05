@@ -63,8 +63,9 @@ def run():
               docker_cmd='-p 5000:5000')
 
 
-def execute(command):
-    sh_docker(command)
+def execute(command, production):
+    sh_docker(command,
+              production=production)
 
 
 def check():
@@ -108,6 +109,8 @@ p.set_defaults(action=run)
 
 p = subparsers.add_parser('x', help='execute a command in docker')
 p.add_argument('command', help='command to execute')
+p.add_argument('--production', action='store_true',
+               help='connect to the production database')
 p.set_defaults(action=execute)
 
 p = subparsers.add_parser('check', help='run code checks')

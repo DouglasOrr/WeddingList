@@ -5,6 +5,9 @@ RUN apt-get update         \
        unzip               \
     && apt-get clean
 
+RUN wget https://www.digicert.com/CACerts/BaltimoreCyberTrustRoot.crt.pem \
+    -qO /BaltimoreCyberTrustRoot.crt.pem
+
 COPY . /app
 
 RUN cd /app                            \

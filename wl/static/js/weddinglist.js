@@ -7,7 +7,7 @@ $(function() {
         showSeconds: false
     });
     $('.countdown').click(function () {
-        window.location = 'https://www.youtube.com/watch?v=rPLiGyWy5bQ'
+        window.location = 'https://www.youtube.com/watch?v=rPLiGyWy5bQ';
     });
 
     // List of items
