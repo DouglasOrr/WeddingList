@@ -2,12 +2,12 @@ import mysql.connector
 import os
 
 
-def connect():
+def connect(database=os.environ['DB_DATABASE']):
     return mysql.connector.connect(
         host=os.environ['DB_HOST'],
         user=os.environ['DB_USER'],
         password=os.environ['DB_PASSWORD'],
-        database=os.environ['DB_DATABASE'],
+        database=database,
         ssl_ca='/BaltimoreCyberTrustRoot.crt.pem',
     )
 

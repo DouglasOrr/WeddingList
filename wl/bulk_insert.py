@@ -27,7 +27,7 @@ with util.UsingConn(util.connect()) as conn, util.UsingCursor(conn) as cursor:
     with open(list_file) as f:
         for row in csv.DictReader(f):
             # Insert item first
-            print("Adding: %s" % row)
+            print('Adding: %s' % row)
 
             cursor.execute("""
             INSERT INTO item (id, title, description, value)

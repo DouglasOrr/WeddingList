@@ -63,6 +63,11 @@ def run():
               docker_cmd='-p 5000:5000')
 
 
+def prod():
+    sh_docker('gunicorn -w 4 -b=0.0.0.0:80 wl.server:app',
+              docker_cmd='-p 80:80')
+
+
 def execute(command, production):
     sh_docker(command,
               production=production)
@@ -106,6 +111,9 @@ subparsers = parser.add_subparsers()
 
 p = subparsers.add_parser('run', help='run the server locally')
 p.set_defaults(action=run)
+
+p = subparsers.add_parser('prod', help='run the gunicorn server locally')
+p.set_defaults(action=prod)
 
 p = subparsers.add_parser('x', help='execute a command in docker')
 p.add_argument('command', help='command to execute')

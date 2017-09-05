@@ -1,0 +1,6 @@
+docker run --rm -it -p 80:80 \
+       -e DB_HOST="weddinglistdb.mysql.database.azure.com" \
+       -e DB_USER="${WEDDING_LIST_DB_USER}@weddinglistdb" \
+       -e DB_PASSWORD="${WEDDING_LIST_DB_PASSWORD}" \
+       -e DB_DATABASE="dougandmiriam" \
+       weddinglist

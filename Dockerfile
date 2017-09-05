@@ -12,3 +12,6 @@ COPY . /app
 
 RUN cd /app                            \
     && pip install -r requirements.txt
+
+WORKDIR /app
+CMD gunicorn -w 4 -b=0.0.0.0:80 wl.server:app

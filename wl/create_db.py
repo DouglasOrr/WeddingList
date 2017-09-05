@@ -1,17 +1,13 @@
 """From empty, create the wedding list database.
 """
 
-import mysql.connector
 import os
+from . import util
 
 
-conn = mysql.connector.connect(
-    host=os.environ['DB_HOST'],
-    user=os.environ['DB_USER'],
-    password=os.environ['DB_PASSWORD'],
-)
-try:
-    cursor = conn.cursor()
+with util.UsingConn(util.connect(database=None)) as conn, \
+     util.UsingCursor(conn) as cursor:
+
     cursor.execute('CREATE DATABASE %s' % os.environ['DB_DATABASE'])
     cursor.execute('USE %s' % os.environ['DB_DATABASE'])
     cursor.execute("""CREATE TABLE item (
@@ -33,8 +29,4 @@ try:
     time DATE NOT NULL,
     note VARCHAR(1024) NOT NULL
     )""")
-
     conn.commit()
-    cursor.close()
-finally:
-    conn.close()
