@@ -25,6 +25,14 @@
     az mysql server create --resource-group weddinglist --name weddinglistdb --admin-user king --admin-password PASSWORD --performance-tier Basic --compute-units 50
     az mysql server firewall-rule create --resource-group weddinglist --server weddinglistdb --name HomeIP --start-ip-address IPADDRESS --end-ip-address IPADDRESS
 
+    # 5. Create a server
+    mkdir -p local/.ssh && ssh-keygen
+    az vm create --resource-group weddinglist --name weddinglistvm --image UbuntuLTS --ssh-key-value local/.ssh/id_rsa.pub --admin-user USER
+    # Then install Docker on the server, login to the registry, pull image & start server
+    wget https://raw.githubusercontent.com/DouglasOrr/WeddingList/master/prod
+    sh prod
+
+
 # Setting up:
 
     ./run build
