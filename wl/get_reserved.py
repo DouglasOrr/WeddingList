@@ -12,4 +12,4 @@ with util.UsingConn(util.connect()) as conn, util.UsingCursor(conn) as cursor:
     """)
     print(','.join(cursor.column_names))
     for row in cursor:
-        print(','.join(map(str, row)))
+        print(','.join('"{}"'.format(col) for col in row))
