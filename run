@@ -104,6 +104,13 @@ def sql_repl(production):
        ENV=_to_env(_get_db_credentials(production)))
 
 
+def sql_dump(production):
+    sh('docker run -it -v `pwd`:/work -w /work --rm ${ENV} mysql'
+       ' sh -c \'mysqldump -h$$DB_HOST -u$$DB_USER -p$$DB_PASSWORD'
+       ' --databases $$DB_DATABASE > dump.sql\'',
+       ENV=_to_env(_get_db_credentials(production)))
+
+
 parser = argparse.ArgumentParser(
     description='Run script for development'
 )
@@ -138,6 +145,11 @@ p = subparsers.add_parser('sql-repl', help='connect to a mysql server')
 p.add_argument('--production', action='store_true',
                help='connect to the production database')
 p.set_defaults(action=sql_repl)
+
+p = subparsers.add_parser('sql-dump', help='dump the database')
+p.add_argument('--production', action='store_true',
+               help='connect to the production database')
+p.set_defaults(action=sql_dump)
 
 
 args = vars(parser.parse_args())
